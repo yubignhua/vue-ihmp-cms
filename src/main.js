@@ -7,6 +7,8 @@ import request from './assets/mUtils/request'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './limit'
+//import './assets/style/mixin.scss' //(不能直接应用 scss ???)
+
 
 Vue.use(ElementUI, { size: 'small' });
 Vue.config.productionTip = false;
