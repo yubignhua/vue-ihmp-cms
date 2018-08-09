@@ -1,4 +1,8 @@
 // 放置全局mutations
+import {constantRouterMap } from '@/router/router.js'
+import Cookies from 'js-cookie';
+import {clone} from '../assets/mUtils/utils';
+
 export default {
   ["SET_TOKEN"](state,token){
     state.$userInfo.token = token;
@@ -18,20 +22,23 @@ export default {
   ["SET_FULLPATH"](state,path){
     state.$fullpath = path;
   },
-  ['SET_DOC_LIST'](state,list){
-    state.$docList = [...list];
-  },
-  ['SET_ASSISTENT_LIST'](state,list){
-    state.$assistentList = [...list]
-  },
-  ['SET_CUR_PATINET_ID'](state,id){
-    state.$curPatientId = id
-  },
-  ['SET_SERVICE_ID'](state,id){
-    state.$serviceId = id;
-  },
+
   ['SET_CUR_PATINET_INFO'](state,map){
     state.$curPatientInfo = map
+  },
+  ['SET_ROUTERS']: (state, routers) => {
+    const newRouters = clone(constantRouterMap.concat(routers));
+    state.addRouters = clone(routers);
+    //state.permission_routers = constantRouterMap.concat(routers)
+    state.permission_routers = newRouters
+  },
+  ['TOGGLE_SIDEBAR']: state => {
+    if (state.sidebar.opened) {
+      Cookies.set('sidebarStatus', 1);
+    } else {
+      Cookies.set('sidebarStatus', 0)
+    }
+    state.sidebar.opened = !state.sidebar.opened
   },
   
 };

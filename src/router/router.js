@@ -3,46 +3,55 @@
  */
 import Vue from 'vue';
 import Router from 'vue-router';
-const _import = require('./_import_' + process.env.NODE_ENV)
-
-
-
-
-
 
 // 引入内嵌页面
-// import LayOut from '../pages/layout/layout';
 import Login from '../pages/login/login';
+import Login2 from '../pages/login/index';
 import AppContainer from '../pages/app_container/app_container';
+import Layout from '../pages/layout/layout';
+import Cat from '../pages/cat/cat.vue';
 
 // 引入懒加载页面
 const NoFindPage = r => require.ensure([], () => r(require('../pages/errorPage/404')), '404');
 const NoMatchPage = r => require.ensure([], () => r(require('../pages/errorPage/401')), '401');
-
-
-
-
-
-
-
-
+const HealthManage = r => require.ensure([], () => r(require('../pages/health_manage/health_manage.vue')), 'health_manage');
+const inServerUser = r => require.ensure([], () => r(require('../pages/in_server_user/in_server_user.vue')), 'in_server_user');
 
 // 配置页面路由
-const constantRouterMap = [
-  { path: '/cdm', redirect: 'cdm/cdm_cms/layout/login' },
-  // { path: '/cdm/cdm_cms', redirect: 'cdm/cdm_cms/layout/base_info' },
-  { path: '/cdm/cdm_cms',
-    component:AppContainer,
+export const constantRouterMap = [
+  //公用页面
+  { path: '/404', component: NoFindPage, hidden: true,meta: { title: 'tinymce',icon : 'documentation' }},
+  { path: '/401', component: NoMatchPage, hidden: true,meta: { title: 'tinymce',icon : 'documentation' }},
+  { path: '/login2',name:'login2', component: Login2,meta:{title: '登录页面',icon : 'documentation' } },
+  { path: '/ihmp',component:AppContainer,redirect: '404',hidden: true,
+    meta:{title:"",icon: 'example'},
     children:[
-      { path: 'login',name:'登录', component: Login },
-      //404页
-      { path: '404', component: NoFindPage, hidden: true},
-      { path: '401', component: NoMatchPage, hidden: true},
-      // { path: 'cat', component: cat, hidden: true},
-      //布局页
-      // { path: 'layout',component: LayOut},
+      { path: 'login',name:'login',hidden: true, component: Login,meta:{title: '登录页面',icon : 'example' } },
     ],
   },
+  // 权限页面
+  { path: '/ihmp/cms',
+    component:Layout,
+    redirect: '404',
+    meta:{title:"任务管理",icon: 'example'},
+    children:[
+      {path : 'cat3',name:'cat3',component :Cat,meta : {title : 'cat',icon : 'documentation',roles : ['assistant']}},
+      { path: 'health_manage',name:'health_manage', component: HealthManage,meta:{title : '健康管理',icon : 'example',roles : ['assistant']} },
+      { path: 'in_server_user',name:'in_server_user', component: inServerUser,meta:{title : '服务中',icon : 'example',roles : ['assistant']} },
+
+    ],
+  },
+  { path: '/ihmp/layouts',
+    component:Layout,
+    redirect: '404',
+    meta:{title:"CRM",icon: 'documentation'},
+    children:[
+      {path : 'cat',name:'cats',component :Cat,meta : {title : 'cat',icon : 'documentation',roles : ['assistant']}},
+      { path: 'health_manage',name:'health_manages', component: HealthManage,meta:{title : '健康管理',icon : 'documentation',roles : ['assistant']} },
+    
+    ],
+  },
+
 ];
 // 实例化路由对象
 Vue.use(Router);
@@ -59,7 +68,21 @@ const router =  new Router({
 });
 export default router
 
+//动态权限页面
+export const asyncRouterMap = [
+  { path: '/ihmp/layout',
+    component:Layout,
+    redirect: '404',
+    meta:{title:"CRM",icon:'component'},
+    children:[
+      {path : 'cat4',name:'cat4',component :Cat,meta : {title : 'cat4',icon : 'component',roles : ['assistant']}},
+      { path: 'health_manage',name:'health_manage1', component: HealthManage,meta:{title : 'haha',icon : 'component',roles : ['assistant']} },
+    
+    ],
+  },
+]
 
+/*
 
 export const asyncRouterMap = [
   {
@@ -246,4 +269,5 @@ export const asyncRouterMap = [
   
   { path: '*', redirect: '/404', hidden: true }
 ]
+*/
 

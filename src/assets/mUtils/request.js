@@ -32,11 +32,11 @@ service.interceptors.request.use((config) => {
 });
 service.interceptors.response.use(
   response => {
-    console.log('=====response====',response);
+    console.info("%c%s","color:#5B9EE3;background:white;border-radius:10px"," net::res => " +response.config.url,response);
     return response
   },
   error => {
-    console.log('net::err' + error);
+    console.info("%c%s","color:red;background:white"," net::res =>  "+error);
     Message({
       message: error.message,
       type: 'error',
@@ -44,10 +44,6 @@ service.interceptors.response.use(
     });
     return Promise.reject(error)
   });
-
-
-
-
 export default service
 
 

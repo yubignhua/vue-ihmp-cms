@@ -30,9 +30,11 @@
     .sidebar-container,.sidebar-container .el-menu {
       width: 36px!important;
       // overflow: inherit;
+      display: none;
     }
     .main-container {
-      margin-left: 36px;
+      //margin-left: 36px;
+      margin-left: 0px;
     }
   }
   .hideSidebar {

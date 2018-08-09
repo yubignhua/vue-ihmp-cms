@@ -5,6 +5,8 @@ import router from './router/router';
 import store from './store';
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { Message } from 'element-ui'
+
 import {getToken} from './assets/mUtils/auth'
 
 NProgress.configure({ showSpinner: false });
@@ -28,77 +30,41 @@ router.beforeEach((to, from, next) => {
   store.commit('updateLoadingStatus', {isLoading: true});
   store.commit('SET_FULLPATH',to.path);
   
-  let index = -1;
-  for(let i = 0; i < routeList.length; i++) {
-    if(routeList[i].name == to.name) {
-      index = i;
-      break;
-    }
-  }
-  if (index !== -1){//如果存在路由列表，则把之后的路由都删掉
-    //console.log(">>>>>>>>>>>>>>>如果存在路由列表，则把之后的路由都删掉")
-    routeList.splice(index + 1,routeList.length - index - 1);
-  } else{//如果不存在
-    console.log('to.rank>>>>>',to.meta.rank);
-    console.log('from.rank>>>>',from.meta.rank);
-    if(to.meta.name !== '登录'){
-      if(to.meta.rank === from.meta.rank){
-        //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>同级别跳转');
-        routeList[routeList.length-1] = {"name" : to.name,"path" : to.fullPath};
-      }else if(to.meta.rank< from.meta.rank){
-        // routeList.splice(to.meta.rank-1,routeList.length - index - 1);
-        //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>返回上一级');
-        routeList.splice(to.meta.rank-1,routeList.length - index - 1);
-        routeList.push({"name" : to.name,"path" : to.fullPath});
-      }else{
-        //console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>跳转下一级别');
-        routeList.push({"name" : to.name,"path" : to.fullPath});
-      }
-    }
-  }
-  //console.log('routeList>>>',routeList)
-  to.meta.routeList = routeList;
-  
-
-  
-  //if (getToken()){ //有 token
-  if (true){ //有 token
-  //if (true){ //有 token
-    if (to.path === '/cdm/cdm_cms/login') {
-      console.warn('直接跳转登录页面不需要 role 权限');
+  if (to.path === '/ihmp/login') {
+      console.warn('权限 ==> 直接跳转登录页面不需要 role 权限');
       next();
       NProgress.done();
     } else {
       if (store.getters.roles.length === 0) {//未获得 role 未登录
-        console.warn('未缓存role 请求 role 权限');
+        console.warn('权限 ==> 未缓存role 进行登录验证');
         //请求获取 role
         store.dispatch('getRole').then(res =>{
-          console.warn("role权限",res);
-          if(res.error_code === 0){
-            //获取 role 成功(表名已经登录) 直接跳转相应页面
-            console.warn('获取role权限成功直接跳转');
-            if (to.matched.length ===0) {//如果未匹配到路由
-              //如果上级也未匹配到路由则跳转404页面，如果上级能匹配到则转上级路由
-              from.name ? next({ name:from.name }) : next('/cdm/cdm_cms/404');
-            } else {
-              next();
-            }
+          console.log("role 权限",res);
+          if(res.error_code === 0){//获取 role 成功(表名已经登录) 直接跳转相应页面
+            console.warn('权限 ==> 登录验证通过直接跳转');
+            const roles = res.role;
+            //console.log('====',roles);
+            store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
+              //console.log('***************',store.getters.addRouters);
+              router.addRoutes(store.getters.addRouters); // 动态添加可访问路由表
+              if (to.matched.length ===0) {//如果未匹配到路由
+                //如果上级也未匹配到路由则跳转404页面，如果上级能匹配到则转上级路由
+                next('/404');
+              } else {
+                next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+              }
+            })
           }else{
-            console.warn('获取role权限失败跳转登录页面 重新登录');
-            console.log('error_msg',res.error_msg);
-            console.log('error_code',res.error_code);
-            next('/cdm/cdm_cms/login')
+            console.warn('权限 ==> 登录验证未通过 跳转登录页面重新登路');
+            next('/ihmp/login')
           }
-        
         }).catch((err)=>{
-          //获取 role 失败(表面未登录)跳转登录页面
-          console.warn('获取 role 失败 跳转登录页面 重新登录');
-          console.log('error_msg',err.error_msg);
-          console.log('error_code',err.error_code);
-          next('/cdm/cdm_cms/login')
+          console.warn('权限 ==> 网络错误 跳转登录页面');
+          Message.error('网络错误请重新再试');
+          next('/ihmp/login')
         });
-      } else{//以获取 role 已经登录
-        console.log('roles.length !== 0');
+      } else{//已经获取 role 已经登录
+        console.warn('权限 ==> 登录验证通过 直接跳转页面');
         if (to.matched.length ===0) {//如果未匹配到路由
           //如果上级也未匹配到路由则跳转404页面，如果上级能匹配到则转上级路由
           from.name ? next({ name:from.name }) : next('/cdm/cdm_cms/404');
@@ -107,14 +73,7 @@ router.beforeEach((to, from, next) => {
         }
       }
     }
-  }else{//没有 token
-    if (to.path === '/cdm/cdm_cms/login') {
-      next();
-    }else{
-      next('/cdm/cdm_cms/login');
-    }
-    NProgress.done();
-  }
+  
  
 
 });

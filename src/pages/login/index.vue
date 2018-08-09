@@ -1,8 +1,10 @@
 <template>
   <div class="login-container">
+    <img class="login_img" src="../../assets/images/welcome.png" alt="">
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <div class="title-container">
-        <h3 class="title">慢性病管理CMS</h3>
+        <h3 class="title">{{$t('login.title')}}</h3>
+        <lang-select class="set-language"></lang-select>
       </div>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
@@ -21,71 +23,64 @@
         </span>
       </el-form-item>
 
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
-
-      <!--<div class="tips">-->
-        <!--<span>{{$t('login.username')}} : admin</span>-->
-        <!--<span>{{$t('login.password')}} : {{$t('login.any')}}</span>-->
-      <!--</div>-->
-      <!--<div class="tips">-->
-        <!--<span style="margin-right:18px;">{{$t('login.username')}} : editor</span>-->
-        <!--<span>{{$t('login.password')}} : {{$t('login.any')}}</span>-->
-      <!--</div>-->
-
-      <!--<el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{$t('login.thirdparty')}}</el-button>-->
+      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="submitForm">{{$t('login.logIn')}}</el-button>
     </el-form>
-
-    <el-dialog title="thirdparty" :visible.sync="showDialog" append-to-body>
-      "hahahahah"
-      <br/>
-      <br/>
-      <br/>
-      <social-sign />
-    </el-dialog>
 
   </div>
 </template>
 
 <script>
-  //import { isvalidUsername } from '@/utils/validate'
-  //import LangSelect from '@/components/LangSelect'
-  //import SocialSign from './socialsignin'
+  import { isvalidUsername } from '@/utils/validate'
+  import LangSelect from '@/components/LangSelect'
+  import {mapActions} from 'vuex'
+  import {validPhone} from '../../assets/mUtils/validate'
+  import Cookies from 'js-cookie'
+
 
   export default {
-    //components: { LangSelect, SocialSign },
+    components: { LangSelect },
     name: 'login',
     data() {
-//      const validateUsername = (rule, value, callback) => {
-//        if (!isvalidUsername(value)) {
-//          callback(new Error('Please enter the correct user name'))
-//        } else {
-//          callback()
-//        }
-//      }
-//      const validatePassword = (rule, value, callback) => {
-//        if (value.length < 6) {
-//          callback(new Error('The password can not be less than 6 digits'))
-//        } else {
-//          callback()
-//        }
-//      }
+      const validateUsername = (rule, value, callback) => {
+        if (!isvalidUsername(value)) {
+          callback(new Error('请填写正确的用户名'))
+        } else {
+          callback()
+        }
+      };
+      const validatePassword = (rule, value, callback) => {
+        if (value.length < 6) {
+          callback(new Error('密码不能少于6位'))
+        } else {
+          callback()
+        }
+      };
       return {
         loginForm: {
           username: 'admin',
           password: '1111111'
         },
         loginRules: {
-//          username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-//          password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-          username: [{ required: true, trigger: 'blur',  }],
-          password: [{ required: true, trigger: 'blur',}]
+          username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+          password: [{ required: true, trigger: 'blur', validator: validatePassword }]
         },
         passwordType: 'password',
         loading: false,
-        showDialog: false
+
+
+        ruleForm2: {
+          account:Cookies.get('mPhone')||'',
+          pass: Cookies.get('pass')||'',
+        },
+        rules2: {
+          account: [
+            {message: '请填写正确的手机号码',trigger: 'blur',validator:validPhone},
+          ]
+        }
       }
     },
     methods: {
+      ...mapActions(['getUerInfo']),
       showPwd() {
         if (this.passwordType === 'password') {
           this.passwordType = ''
@@ -94,46 +89,62 @@
         }
       },
       handleLogin() {
-//        this.$refs.loginForm.validate(valid => {
-//          if (valid) {
-//            this.loading = true
-//            this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-//              this.loading = false
-//              this.$router.push({ path: '/' })
-//            }).catch(() => {
-//              this.loading = false
-//            })
-//          } else {
-//            console.log('error submit!!')
-//            return false
-//          }
-//        })
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true
+            this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+              this.loading = false
+              this.$router.push({ path: '/' })
+            }).catch(() => {
+              this.loading = false
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
       },
-      afterQRScan() {
-        // const hash = window.location.hash.slice(1)
-        // const hashObj = getQueryObject(hash)
-        // const originUrl = window.location.origin
-        // history.replaceState({}, '', originUrl)
-        // const codeMap = {
-        //   wechat: 'code',
-        //   tencent: 'code'
-        // }
-        // const codeName = hashObj[codeMap[this.auth_type]]
-        // if (!codeName) {
-        //   alert('第三方登录失败')
-        // } else {
-        //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-        //     this.$router.push({ path: '/' })
-        //   })
-        // }
+      /**
+       * 登录方法
+       * @param formName
+       */
+      submitForm(formName) {
+        let that = this;
+        this.$refs[formName].validate(valid => {
+          if (valid) {
+            Cookies.set('mPhone', this.ruleForm2.account);
+            Cookies.set('pass', this.ruleForm2.pass);
+            this.loading = true;
+            that.getUerInfo(that.ruleForm2).then((res)=>{
+              this.loading = false;
+              if(res.error_code === 0){
+                //登录成后的跳转
+                that.$router.push({path:'/ihmp/cms/cat'})
+              }else{
+                that.$notify.error({
+                  title  : '错误',
+                  message: res.error_msg
+                })
+              }
+            }).catch( err =>{
+              this.loading = false;
+              console.log(err)
+            })
+          }
+        })
+      },
+      /**
+       * 重置
+       * @param formName
+       */
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
       }
     },
-    created() {
-      // window.addEventListener('hashchange', this.afterQRScan)
+    mounted(){
+      console.log('colllkie;::',document.cookie)
     },
-    destroyed() {
-      // window.removeEventListener('hashchange', this.afterQRScan)
-    }
+
   }
 </script>
 
@@ -180,6 +191,11 @@
     height: 100%;
     width: 100%;
     background-color: $bg;
+    .login_img{
+      height: 60px;
+      margin-top: 50px;
+      padding-left: 50px;
+    }
     .login-form {
       position: absolute;
       left: 0;

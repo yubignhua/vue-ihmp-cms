@@ -59,7 +59,7 @@
             	console.log("res:::",res);
             	if(res.error_code === 0){
                 //登录成后的跳转
-                that.$router.push({path:'/cdm/cdm_cms/layout/base_info'})
+                that.$router.push({path:'/ihmp/cms/cat'})
               }else{
                 that.$notify.error({
                   title  : '错误',

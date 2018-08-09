@@ -15,75 +15,66 @@
       <!--表格数据------------>
       <div class="table_container" style="margin-top: 20px;">
         <el-table
-          @row-click="changeTo"
-          :stripe='true'
-          v-loading="loading"
-          :data="tableData"
-          style="width:100%;min-height: 500px;"
-          :max-height="tableHeight">
+            @row-click="changeTo"
+            :stripe='true'
+            v-loading="loading"
+            :data="tableData">
           <el-table-column
             fixed
             prop="user_name"
             label="姓名"
-            width="100">
+            min-width="130">
           </el-table-column>
 
           <el-table-column
             prop="user_cellphone"
             label="手机号"
-            width="100">
+            min-width="150">
           </el-table-column>
 
-          <el-table-column prop="user_sex" label="性别" width="50">
+          <el-table-column prop="user_sex" label="性别" min-width="150">
             <template slot-scope="scope">
               {{scope.row.user_sex==="m"?"男":"女"}}
             </template>
           </el-table-column>
+
           <el-table-column
             prop="user_age"
             label="年龄"
-            width="50">
+            min-width="150">
           </el-table-column>
+
           <el-table-column
             prop="start_time"
             label="服务开始"
-            min-width="50">
+            min-width="150">
           </el-table-column>
 
           <el-table-column
             prop="end_time"
             label="服务结束"
-            min-width="50">
+            min-width="150">
           </el-table-column>
 
           <el-table-column
             prop="doctor_name"
             label="医生"
-            min-width="50">
+            min-width="150">
           </el-table-column>
 
           <el-table-column
             prop="assistant_name"
             label="医助"
-            min-width="50">
+            min-width="150">
           </el-table-column>
 
           <el-table-column
             prop="user_remarks"
             label="用户备注"
-            min-width="100">
+            min-width="200">
           </el-table-column>
 
-
-          <el-table-column fixed="right" prop="user_custom_tags" label="用户标签" width="100">
-            <template slot-scope="scope">
-              <el-tag  @click.native.stop="changeTag(scope.$index, scope.row.user_id)">
-                {{scope.row.user_custom_tags?scope.row.user_custom_tags:"+"}}
-              </el-tag>
-            </template>
-          </el-table-column>
-
-          <el-table-column fixed="right" label="病情日历" width="100">
+          <el-table-column fixed="right" label="病情日历" min-width="150">
             <template slot-scope="scope">
               <el-button
                 type="primary"
@@ -97,6 +88,7 @@
 
         </el-table>
       </div>
+
     </el-main>
     <!--footer------------>
     <el-footer style="background: white;border-top: solid 1px #f4f4f4;">
@@ -109,10 +101,6 @@
         <full-calendar :events="fcEvents" locale="zh" lang="zh" @eventClick="dateClick" @changeMonth="changeMonth"></full-calendar>
       </el-dialog>
     </div>
-
-
-
-
   </div>
 </template>
 
@@ -383,36 +371,22 @@
     }
   }
   .user-base-info{
-    width:100%;
-    position: absolute;
-    top:0;
-    bottom:0;
     .el-main {
       background: #f0f2f5;
       color: #333;
       text-align: center;
-      width: 100%;
-      position: absolute;
-      /*overflow-y: hidden;*/
-      bottom: 80px;
-      top:0;
-
     .el-tag {
       cursor: pointer;
     }
     }
     .el-table .cell{
-      /*overflow: hidden;*/
-      white-space: nowrap;
+      text-align: center;
     }
     .el-footer {
       height: 100px;
       background: #B3C0D1;
-      position: absolute;
-      bottom: 0;
-      width: 100%;
       .show_num{
-        @include ct();
+        //@include ct();
         color: #303133;
         span{
           color: #409EFF

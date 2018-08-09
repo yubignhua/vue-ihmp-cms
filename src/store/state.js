@@ -1,30 +1,30 @@
 /**
  * Created by yubh on 2018/3/10.
  */
+import {constantRouterMap } from '@/router/router.js'
 import { getToken} from '../assets/mUtils/auth'
+import Cookies from 'js-cookie'
+import {clone} from '../assets/mUtils/utils';
 
 export default {
   //全局存储用户基本信息
   $userInfo:{
-    account:'',//账号
-    roles:[],//权限
-    user: '',
-    status: '',//状态
-    code: '',
-    token: getToken() || '',
     name: '',//名称
+    account:'',//账号
     avatar: '',//头像
+    roles:[],//权限
+    status: '',//状态
+    token: getToken() || '',
     introduction: '',
   },
-  //slidebar 导航路径
-  $fullpath:'cdm/cdm_cms/layout/base_info',
-  //全局存储可用医生列表
-  $docList:[],
-  //全局存储可用医助列表
-  $assistentList:[],
-  //存储 健康管理 当前选择的服务患者 id
-  $curPatientId:0,
-  $serviceId:0,
-  $curPatientInfo:{}
+  permission_routers:clone(constantRouterMap),//权限路由
+  addRouters: [],
+  sidebar: {
+    opened: !+Cookies.get('sidebarStatus')
+  },
+  
+ 
+  
+  
   
 };

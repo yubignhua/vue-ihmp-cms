@@ -12,9 +12,9 @@
     <button class="cat_one" @click="remove()">减1  </button>:{{counter}}
     <br>
     <div class="team_list">团队列表:</div>
-    <Scroll>
-        <div class="m-wrapper" v-for="item in 50" style="height: 59px;">hahahhahahahhaahahaha</div>
-    </Scroll>
+    <!--<Scroll>-->
+        <!--<div class="m-wrapper" v-for="item in 50" style="height: 59px;">hahahhahahahhaahahaha</div>-->
+    <!--</Scroll>-->
 
 
 
@@ -145,7 +145,7 @@
     position: absolute;
     z-index: 80;
     width: 100%;
-    top:0;
+    top:60px;
     bottom:0;
     background: #ffffff;
     .cat_one{
