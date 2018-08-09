@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <img class="login_img" src="../../assets/images/welcome.png" alt="">
+    <img class="login_img" src="../../../assets/images/welcome.png" alt="">
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <div class="title-container">
         <h3 class="title">{{$t('login.title')}}</h3>
@@ -33,7 +33,7 @@
   import { isvalidUsername } from '@/utils/validate'
   import LangSelect from '@/components/LangSelect'
   import {mapActions} from 'vuex'
-  import {validPhone} from '../../assets/mUtils/validate'
+  import {validPhone} from '../../../assets/mUtils/validate'
   import Cookies from 'js-cookie'
 
 

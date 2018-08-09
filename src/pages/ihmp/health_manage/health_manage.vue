@@ -114,7 +114,7 @@
   import {mapState,mapActions,mapMutations } from 'vuex';
   import { Loading } from 'element-ui';
   import moment from 'moment';
-  import {validPhone} from '../../assets/mUtils/validate';
+  import {validPhone} from '../../../assets/mUtils/validate';
   export default {
     components:{'full-calendar': require('vue-fullcalendar')},
     data() {
@@ -359,7 +359,7 @@
   }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-  @import '../../assets/style/mixin.scss';
+  @import '../../../assets/style/mixin.scss';
   .el-dialog__body{
     //display: none;
     padding:0;

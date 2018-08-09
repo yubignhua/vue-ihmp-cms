@@ -33,8 +33,8 @@
 
 <script>
   import BScroll from 'better-scroll'
-  import Loading from '../components/scroll_loading.vue'
-  import Bubble from '../components/bubble.vue'
+  import Loading from './scroll_loading.vue'
+  import Bubble from './bubble.vue'
   import { getRect } from '../assets/mUtils/dom'
 
   const COMPONENT_NAME = 'scroll'

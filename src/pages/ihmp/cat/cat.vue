@@ -25,7 +25,7 @@
 
 <script>
 
-  import Scroll from '../../components/scroll'
+  import Scroll from '../../../components/scroll'
   export default{
     // 将引用的组件应用到本组模板内
     components:{Scroll},
@@ -140,7 +140,7 @@
 </script>
 <style lang="scss" rel="stylesheet/scss">
   //引入 css 样式
-  @import '../../assets/style/mixin.scss';
+  @import '../../../assets/style/mixin.scss';
   .cat{
     position: absolute;
     z-index: 80;

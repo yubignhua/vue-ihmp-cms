@@ -197,8 +197,8 @@
 <script>
   import { mapState,mapMutations,mapActions,mapGetters } from 'vuex'
   import moment from 'moment';
-  import {validPhone} from '../../assets/mUtils/validate'
-  import DateAdd from '../../assets/mUtils/calcDate'
+  import {validPhone} from '../../../assets/mUtils/validate'
+  import DateAdd from '../../../assets/mUtils/calcDate'
   const PURCHASE = '/cdm/purchase/add/';
   //修改病人标签接口
   const EDITREMARK = '/cdm/user/edit/';
@@ -207,7 +207,7 @@
 
   //动态血压上传
   const UP_BP = '/cdm/user/pressure/report/upload/';
-  import qUpload from '../../components/qupload.vue'
+  import qUpload from '../../../components/qupload.vue'
 
 
 
@@ -644,7 +644,7 @@
   };
 </script>
 <style lang="scss" rel="stylesheet/scss">
-  @import '../../assets/style/mixin.scss';
+  @import '../../../assets/style/mixin.scss';
 
   .wait_distribution{
     .top_search{

@@ -1,7 +1,7 @@
 <template>
   <scroll-bar>
      <div class="logo_wrapper">
-       <img src="../../../../assets/images/logo.png" width="70%" alt="">
+       <img src="../../../../../assets/images/logo.png" width="70%" alt="">
      </div>
      <div class="slidebar-top">
        <div><svg-icon size='28px'  color="#fff" icon-class="home" /></div>

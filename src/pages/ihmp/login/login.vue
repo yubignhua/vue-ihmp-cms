@@ -25,7 +25,7 @@
 
 <script>
 	import {mapActions} from 'vuex'
-  import {validPhone} from '../../assets/mUtils/validate'
+  import {validPhone} from '../../../assets/mUtils/validate'
   import Cookies from 'js-cookie'
 
 	export default {
@@ -88,7 +88,7 @@
 	};
 </script>
 <style lang="scss" rel="stylesheet/scss">
-    @import '../../assets/style/mixin.scss';
+    @import '../../../assets/style/mixin.scss';
     .login{
       position: absolute;
       width: 100%;

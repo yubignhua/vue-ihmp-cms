@@ -5,17 +5,17 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 // 引入内嵌页面
-import Login from '../pages/login/login';
-import Login2 from '../pages/login/index';
-import AppContainer from '../pages/app_container/app_container';
-import Layout from '../pages/layout/layout';
-import Cat from '../pages/cat/cat.vue';
+import Login from '../pages/ihmp/login/login';
+import Login2 from '../pages/ihmp/login/index';
+import AppContainer from '../pages/ihmp/app_container/app_container';
+import Layout from '../pages/ihmp/layout/layout';
+import Cat from '../pages/ihmp/cat/cat.vue';
 
 // 引入懒加载页面
-const NoFindPage = r => require.ensure([], () => r(require('../pages/errorPage/404')), '404');
-const NoMatchPage = r => require.ensure([], () => r(require('../pages/errorPage/401')), '401');
-const HealthManage = r => require.ensure([], () => r(require('../pages/health_manage/health_manage.vue')), 'health_manage');
-const inServerUser = r => require.ensure([], () => r(require('../pages/in_server_user/in_server_user.vue')), 'in_server_user');
+const NoFindPage = r => require.ensure([], () => r(require('../pages/ihmp/errorPage/404')), '404');
+const NoMatchPage = r => require.ensure([], () => r(require('../pages/ihmp/errorPage/401')), '401');
+const HealthManage = r => require.ensure([], () => r(require('../pages/ihmp/health_manage/health_manage')), 'health_manage');
+const inServerUser = r => require.ensure([], () => r(require('../pages/ihmp/in_server_user/in_server_user')), 'in_server_user');
 
 // 配置页面路由
 export const constantRouterMap = [
