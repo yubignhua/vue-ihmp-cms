@@ -5,7 +5,7 @@ import { asyncRouterMap } from '@/router/router.js';
 
 import request from '../assets/mUtils/request'
 //登录
-const LOGIN = '/cdm/accounts/pc/login/';
+const LOGIN = '/chunyu_admin/accounts/do_login/';
 //登出
 const LOGINOUT ='/cdm/accounts/logout/';
 //获取医生列表
@@ -28,9 +28,8 @@ export default {
    */
   async getUerInfo({commit},userInfo){
     let account = userInfo.account.trim();
-    let password = userInfo.pass.trim();
-    const loginData = await request.post(LOGIN,{cellphone:account,verify_code:password});
-    console.log('loginData',loginData);
+    let password = userInfo.password.trim();
+    const loginData = await request.post(LOGIN,{username:account,password:password});
     loginData.data.role && commit("SET_ROLE",loginData.data.role);
     loginData.data.user_name && commit("SET_NAME",loginData.data.user_name);
     //loginData.data.token && commit("SET_TOKEN",loginData.data.token);
@@ -47,7 +46,6 @@ export default {
       commit('SET_NAME', '');
       commit('CLEAR_ROLE');
       commit('SET_TOKEN', '');
-       //removeToken()
      };
      return loginState.data
   },

@@ -47,7 +47,8 @@ module.exports = {
     new webpack.ProvidePlugin({
       Axios: "axios",
       $:'jquery',
-    })
+    }),
+    
   ],
   
   

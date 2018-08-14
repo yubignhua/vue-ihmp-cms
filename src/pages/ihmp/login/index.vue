@@ -1,30 +1,37 @@
 <template>
   <div class="login-container">
-    <img class="login_img" src="../../../assets/images/welcome.png" alt="">
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <div class="title-container">
-        <h3 class="title">{{$t('login.title')}}</h3>
-        <lang-select class="set-language"></lang-select>
+    <div class="container">
+      <div>
+        <img class="login_img" src="../../../assets/images/welcome.png" alt="">
       </div>
-      <el-form-item prop="username">
+      <div style="border:solid 1px #ececec;box-sizing: border-box;overflow: hidden;">
+        <div class="left_img"><img src="//static.chunyuyisheng.com/@/media/images/2018/08/13/7a1f/229beba3bf99_w600_h410_.png" alt=""></div>
+        <el-form class="login-form" autoComplete="on" :model="ruleForm2" ref="ruleForm2" label-position="left">
+          <div class="title-container">
+            <h3 class="title">{{$t('login.title')}}</h3>
+            <lang-select class="set-language"></lang-select>
+          </div>
+          <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
-      </el-form-item>
+            <el-input name="username" type="text" v-model="ruleForm2.account" autoComplete="on" placeholder="username" />
+          </el-form-item>
 
-      <el-form-item prop="password">
+          <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password" />
-        <span class="show-pwd" @click="showPwd">
+            <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="ruleForm2.password" autoComplete="on" placeholder="password" />
+            <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
         </span>
-      </el-form-item>
+          </el-form-item>
 
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="submitForm">{{$t('login.logIn')}}</el-button>
-    </el-form>
+          <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="submitForm('ruleForm2')">{{$t('login.logIn')}}</el-button>
+        </el-form>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -41,36 +48,12 @@
     components: { LangSelect },
     name: 'login',
     data() {
-      const validateUsername = (rule, value, callback) => {
-        if (!isvalidUsername(value)) {
-          callback(new Error('请填写正确的用户名'))
-        } else {
-          callback()
-        }
-      };
-      const validatePassword = (rule, value, callback) => {
-        if (value.length < 6) {
-          callback(new Error('密码不能少于6位'))
-        } else {
-          callback()
-        }
-      };
       return {
-        loginForm: {
-          username: 'admin',
-          password: '1111111'
-        },
-        loginRules: {
-          username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-          password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-        },
         passwordType: 'password',
         loading: false,
-
-
         ruleForm2: {
-          account:Cookies.get('mPhone')||'',
-          pass: Cookies.get('pass')||'',
+          username:Cookies.get('mPhone')||'',
+          password: Cookies.get('pass')||'',
         },
         rules2: {
           account: [
@@ -88,22 +71,6 @@
           this.passwordType = 'password'
         }
       },
-      handleLogin() {
-        this.$refs.loginForm.validate(valid => {
-          if (valid) {
-            this.loading = true
-            this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-              this.loading = false
-              this.$router.push({ path: '/' })
-            }).catch(() => {
-              this.loading = false
-            })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      },
       /**
        * 登录方法
        * @param formName
@@ -117,18 +84,18 @@
             this.loading = true;
             that.getUerInfo(that.ruleForm2).then((res)=>{
               this.loading = false;
-              if(res.error_code === 0){
+              if(res.username){
                 //登录成后的跳转
-                that.$router.push({path:'/ihmp/cms/cat'})
-              }else{
+                that.$router.push({path:'/ihmp/task_manage/task_list'})
+              }
+              if(res.error_msg){
                 that.$notify.error({
                   title  : '错误',
-                  message: res.error_msg
+                  message: res.error_msg || '登录失败'
                 })
               }
             }).catch( err =>{
               this.loading = false;
-              console.log(err)
             })
           }
         })
@@ -149,7 +116,7 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-  $bg:#2d3a4b;
+  $bg: #ffffff;
   $light_gray:#eee;
 
   /* reset element-ui css */
@@ -168,7 +135,7 @@
         height: 47px;
         &:-webkit-autofill {
           -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
-          -webkit-text-fill-color: #fff !important;
+          /*-webkit-text-fill-color: #fff !important;*/
         }
       }
     }
@@ -190,19 +157,32 @@
     position: fixed;
     height: 100%;
     width: 100%;
-    background-color: $bg;
+    //background-color: $bg;
     .login_img{
       height: 60px;
-      margin-top: 50px;
-      padding-left: 50px;
+      margin-bottom: 50px;
+    }
+    .container{
+      margin: auto;
+      margin-top:50px;
+      height:410px;
+      width:1122px;
+
+    }
+    .left_img{
+      float: left;
+      height: 410px;
     }
     .login-form {
-      position: absolute;
-      left: 0;
-      right: 0;
+      /*position: absolute;*/
+      /*left: 0;*/
+      /*right: 0;*/
       width: 520px;
       padding: 35px 35px 15px 35px;
       margin: 120px auto;
+      float: left;
+      margin-top:40px;
+      margin-bottom:0;
     }
     .tips {
       font-size: 14px;
@@ -229,7 +209,7 @@
       .title {
         font-size: 26px;
         font-weight: 400;
-        color: $light_gray;
+        color: #443e3e;
         margin: 0px auto 40px auto;
         text-align: center;
         font-weight: bold;

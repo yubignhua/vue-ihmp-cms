@@ -4,8 +4,8 @@
        <img src="../../../../../assets/images/logo.png" width="70%" alt="">
      </div>
      <div class="slidebar-top">
-       <div><svg-icon size='28px'  color="#fff" icon-class="home" /></div>
-       <div><svg-icon size='25px'  color="#fff" icon-class="tree" /></div>
+       <div><router-link :to="{path:'/ihmp/task_manage/task_list'}"><svg-icon size='28px'  color="#fff" icon-class="home" /></router-link></div>
+       <div><router-link :to="{path:'/ihmp/task_manage/operationflow'}"><svg-icon size='25px'  color="#fff" icon-class="tree" /></router-link></div>
      </div>
     <el-menu mode="vertical" :default-active="$route.path" :collapse="isCollapse" background-color="#304156" text-color="#bfcbd9" active-text-color="#409EFF">
     <!--<el-menu mode="vertical" :default-active="$route.path" :collapse="isCollapse" background-color="" text-color="" active-text-color="">-->

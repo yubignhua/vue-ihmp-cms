@@ -6,17 +6,12 @@ import store from './store';
 import request from './assets/mUtils/request'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import './limit'
+//import './limit'
+//import './errorLog'// error log
 //import './assets/style/mixin.scss' //(不能直接应用 scss ???)
 import i18n from './lang' // Internationalization
 import './icons' // icon
-//import './errorLog'// error log
-
-
-
-
-import * as filters from './filters' // global filters
-
+import * as filters from './filters'
 Vue.use(ElementUI, {
   size: 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
