@@ -27,7 +27,7 @@ function Qupload(options) {
         putExtra: {
             fname: '',
             params: {},
-            mimeType: ['image/png', 'image/jpeg', 'image/jpg', 'image/bmp', 'image/gif','application/pdf'] // 允许上传文件类型为,null时表示不对文件类型限制
+            mimeType: ['image/png', 'image/jpeg', 'image/jpg', 'image/bmp', 'image/gif','application/pdf', 'application/vnd.ms-excel'] // 允许上传文件类型为,null时表示不对文件类型限制
         },
         before: function(res) {
             // console.log(res)
@@ -42,12 +42,16 @@ function Qupload(options) {
             // console.log(err.message)
         },
     }
-    options.mimeType ? defaults.putExtra.mimeType = options.mimeType : '';
+    // mimeType传null资源上传类型不受限，但是某些类型从后台限制
+    if (options.mimeType || options.mimeType === null) {
+        defaults.putExtra.mimeType = options.mimeType
+    }
+
     $.extend(true, this, defaults, options);
 
     this.target = $(this.btn) || ''; // 目标元素
     this.token = null;
-    //this.token = "yOzXJLo4fTbpHAjrvAN3iCWaUsTE1hQ9CZuxFlQG:K69edyy9Z5-P8vjXTNtaqPKjj6U=:eyJzY29wZSI6Im5ld3MtY2h1bnl1IiwiY2FsbGJhY2tGZXRjaEtleSI6MSwiZGVhZGxpbmUiOjE1MjU2ODI0NzYsImNhbGxiYWNrQm9keSI6ImtleT0kKGtleSkmdz0kKGltYWdlSW5mby53aWR0aCkmaD0kKGltYWdlSW5mby5oZWlnaHQpJmV4dD0kKGV4dCkmbWltZVR5cGU9JChtaW1lVHlwZSkiLCJjYWxsYmFja1VybCI6Imh0dHA6Ly9iaXp0ZXN0LmNodW55dS5tZS9maWxlcy9xaW5pdV9jYWxsYmFjay8ifQ==";
+    // this.token = "yOzXJLo4fTbpHAjrvAN3iCWaUsTE1hQ9CZuxFlQG:BhWyDcdFY1p-_Q_JxpypNvSb82o=:eyJjYWxsYmFja0ZldGNoS2V5IjoxLCJtaW1lTGltaXQiOiJpbWFnZS9wbmc7aW1hZ2UvanBlZztpbWFnZS9qcGc7aW1hZ2UvYm1wO2ltYWdlL2dpZjthcHBsaWNhdGlvbi9wZGY7YXVkaW8vKjt2aWRlby8qO2FwcGxpY2F0aW9uL3ZuZC5tcy1leGNlbDtBcHBsaWNhdGlvbi9tc2V4Y2VsOyIsImRlYWRsaW5lIjoxNTM2MDQ3OTQ4LCJzY29wZSI6Im5ld3MtY2h1bnl1IiwiY2FsbGJhY2tCb2R5Ijoia2V5PSQoa2V5KSZ3PSQoaW1hZ2VJbmZvLndpZHRoKSZoPSQoaW1hZ2VJbmZvLmhlaWdodCkmZXh0PSQoZXh0KSZtaW1lVHlwZT0kKG1pbWVUeXBlKSIsImNhbGxiYWNrVXJsIjoiaHR0cDovL2JpenRlc3QuY2h1bnl1Lm1lL2ZpbGVzL3Fpbml1X2NhbGxiYWNrLyJ9";
     this.observable = null;
     this.subscription = null;
     this.hasToken = false;
@@ -129,7 +133,7 @@ Qupload.prototype = {
         if (files.length > Number(this.nums)) {
             this.error({
                 type: 'numsError',
-                message: '一次最多上传' + this.nums + '张图片'
+                message: '一次最多上传' + this.nums + '个文件'
             });
             return false
         }
@@ -137,7 +141,7 @@ Qupload.prototype = {
         if (file.size > this.max_file_size) {
             this.error({
                 type: 'sizeError',
-                message: '图片最大不超过15M'
+                message: '文件最大不超过' + this.max_file_size + 'M'
             });
             return false
         }
@@ -149,10 +153,13 @@ Qupload.prototype = {
                 return false
             }
         })
+        if (this.putExtra.mimeType === null) {
+          typeMatch = true;
+        }
         if (!typeMatch) {
             this.error({
                 type: 'typeError',
-                message: '图片上传类型错误'
+                message: '文件上传类型错误'
             });
             return false
         }

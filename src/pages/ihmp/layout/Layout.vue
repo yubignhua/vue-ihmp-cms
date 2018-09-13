@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain, TagsView } from './components'
+import { Navbar, Sidebar, AppMain } from './components'
 import BackToTop from '@/components/BackToTop'
 
 export default {
@@ -21,7 +21,6 @@ export default {
     Navbar,
     Sidebar,
     AppMain,
-    TagsView,
     BackToTop
   },
   data() {

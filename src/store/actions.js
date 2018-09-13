@@ -1,23 +1,15 @@
 /**
  * 放置全局 action
  */
-import { asyncRouterMap } from '@/router/router.js';
+import { asyncRouterMap } from '@/router/router';
 
 import request from '../assets/mUtils/request'
 //登录
 const LOGIN = '/chunyu_admin/accounts/do_login/';
 //登出
 const LOGINOUT ='/cdm/accounts/logout/';
-//获取医生列表
-const GETDOCLIST = '/cdm/doctor/check_list/';
-//获取医助列表
-const GETASSISMENTLIST = '/cdm/assistant/check_list/';
 //获取角色
-const GETROLE = '/cdm/accounts/role/';
-//
-const HELLO = '/cdm/hello/';
-
-//import {setToken, removeToken } from '../assets/mUtils/auth'
+const GETROLE = '/chunyu_admin/crm/accounts/role/';
 import {clone} from '../assets/mUtils/utils';
 
 export default {
@@ -30,26 +22,27 @@ export default {
     let account = userInfo.account.trim();
     let password = userInfo.password.trim();
     const loginData = await request.post(LOGIN,{username:account,password:password});
-    loginData.data.role && commit("SET_ROLE",loginData.data.role);
-    loginData.data.user_name && commit("SET_NAME",loginData.data.user_name);
-    //loginData.data.token && commit("SET_TOKEN",loginData.data.token);
-    //setToken(loginData.data.token);
+    loginData.data.username && commit("SET_NAME",loginData.data.username);
+    const loginInfo = await request.get(GETROLE);
+    loginInfo.data.role && commit("SET_ROLE",loginInfo.data.role);
+    loginInfo.data.user_id && commit('SET_USER_ID',loginInfo.data.user_id);
     return loginData.data;
   },
   /**
    * 登出
    * @param commit
    */
-  async loginOut({commit}){
+  async LogOut({commit}){
     const loginState = await request.get(LOGINOUT);
      if(loginState){
       commit('SET_NAME', '');
       commit('CLEAR_ROLE');
       commit('SET_TOKEN', '');
-     };
+      commit('SET_USER_ID', '');
+     }
      return loginState.data
   },
-  
+
   /**
    * 获取用户角色 如果有则表示已经登录 如果没有则表示未登录
    */
@@ -57,6 +50,7 @@ export default {
     const res = await request.get(GETROLE);
     res.data.role && commit('SET_ROLE',res.data.role);
     res.data.user_name && commit('SET_NAME',res.data.user_name);
+    res.data.user_id && commit('SET_USER_ID',res.data.user_id);
     return res.data
   },
   GenerateRoutes({ commit }, data) {
@@ -78,7 +72,11 @@ export default {
   toggleSideBar({ commit }) {
     commit('TOGGLE_SIDEBAR')
   },
-  
+  //更改语言
+  setLanguage({ commit }, language) {
+    commit('SET_LANGUAGE', language)
+  }
+
 };
 
 

@@ -1,5 +1,6 @@
 // 放置全局mutations
-import {constantRouterMap } from '@/router/router.js'
+//import {constantRouterMap } from '@/router/router'
+import routerIhmp from '../router/router_ihmp';
 import Cookies from 'js-cookie';
 import {clone} from '../assets/mUtils/utils';
 
@@ -16,6 +17,9 @@ export default {
   ["SET_NAME"](state,name){
     state.$userInfo.name = name;
   },
+  ["SET_USER_ID"](state,userId){
+    state.$userInfo.userId = userId;
+  },
   ["SET_AVATAR"](state,avatar){
     state.$userInfo.avatar = avatar;
   },
@@ -27,7 +31,7 @@ export default {
     state.$curPatientInfo = map
   },
   ['SET_ROUTERS']: (state, routers) => {
-    const newRouters = clone(constantRouterMap.concat(routers));
+    const newRouters = clone(routerIhmp.concat(routers));
     state.addRouters = clone(routers);
     //state.permission_routers = constantRouterMap.concat(routers)
     state.permission_routers = newRouters
@@ -40,6 +44,11 @@ export default {
     }
     state.sidebar.opened = !state.sidebar.opened
   },
-  
+  ['SET_LANGUAGE']: (state, language) => {
+    state.language = language
+    Cookies.set('language', language)
+  }
+
+
 };
 

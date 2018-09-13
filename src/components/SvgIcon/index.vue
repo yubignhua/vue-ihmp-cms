@@ -39,7 +39,6 @@ export default {
   		return this.styObj
     },
     iconName() {
-  		console.log(this.iconClass)
       return `#icon-${this.iconClass}`
     },
     svgClass() {

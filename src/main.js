@@ -4,24 +4,18 @@ import 'babel-polyfill';
 import router from './router/router';
 import store from './store';
 import request from './assets/mUtils/request'
+// import 'element-ui/lib/theme-ihmp/index.css';
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-//import './limit'
-//import './errorLog'// error log
-//import './assets/style/mixin.scss' //(不能直接应用 scss ???)
-import i18n from './lang' // Internationalization
-import './icons' // icon
+import './router/limit'
+import i18n from './assets/lang'//国际化配置
+import './assets/icons' // 引入 svg 图标
 import * as filters from './filters'
 Vue.use(ElementUI, {
-  size: 'medium', // set element-ui default size
-  i18n: (key, value) => i18n.t(key, value)
+  size: 'medium'
 });
-
-// register global utility filters.
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 });
-
 Vue.config.productionTip = false;
 if (process.env.NODE_ENV === 'development') {
   //import('./mock/mock.js')
@@ -29,12 +23,25 @@ if (process.env.NODE_ENV === 'development') {
 }
 Vue.use(require('vue-wechat-title'));
 Vue.prototype.request = request;
-
+// 封装element massage
+Vue.prototype.$elementMessage = function (msg, type) {
+  this.$message({
+    message: msg,
+    type: type,
+    showClose: true
+  })
+};
+// 封装表单验证重置
+Vue.prototype.$resetFormValid = function (formName) {
+  if (this.$refs[formName] !== undefined){
+    this.$refs[formName].resetFields();
+  }
+};
 new Vue({
   el: '#app',
   router,
   store,
   i18n,
   template: '<App/>',
-  components: { App },
+  components: {App},
 });

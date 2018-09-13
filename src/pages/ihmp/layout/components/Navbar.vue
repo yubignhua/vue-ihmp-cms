@@ -5,33 +5,29 @@
     <breadcrumb class="breadcrumb-container"></breadcrumb>
 
     <div class="right-menu">
-      <!--<error-log class="errLog-container right-menu-item"></error-log>-->
-
-      <el-tooltip effect="dark" :content="$t('navbar.screenfull')" placement="bottom">
-        <screenfull class="screenfull right-menu-item"></screenfull>
-      </el-tooltip>
-
-      <lang-select class="international right-menu-item"></lang-select>
-
-      <el-tooltip effect="dark" :content="$t('navbar.theme')" placement="bottom">
-        <theme-picker class="theme-switch right-menu-item"></theme-picker>
-      </el-tooltip>
-
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper">
-          <img class="user-avatar" src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80">
+          <span class="user-avatar">{{name}}</span>
           <i class="el-icon-caret-bottom"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              {{$t('navbar.dashboard')}}
+          <el-dropdown-item >
+            <span style="display:block;">{{name}}</span>
+          </el-dropdown-item>
+          <el-dropdown-item divided>
+            <span style="display:block;">{{roles[0]}}</span>
+          </el-dropdown-item>
+          <router-link to="/ihmp/task_manage/task_list">
+            <el-dropdown-item divided>
+              {{$t('navbar.home')}}
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
             <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
+
+
       </el-dropdown>
     </div>
   </el-menu>
@@ -63,7 +59,7 @@ export default {
     ...mapGetters([
       'sidebar',
       'name',
-      'avatar'
+      'roles'
     ])
   },
   methods: {
@@ -82,7 +78,7 @@ export default {
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
-        location.reload()// In order to re-instantiate the vue-router object to avoid bugs
+        location.reload()
       })
     }
   },
@@ -138,18 +134,11 @@ export default {
       margin-right: 30px;
       .avatar-wrapper {
         cursor: pointer;
-        margin-top: 5px;
         position: relative;
         .user-avatar {
           width: 40px;
           height: 40px;
           border-radius: 10px;
-        }
-        .el-icon-caret-bottom {
-          position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
         }
       }
     }

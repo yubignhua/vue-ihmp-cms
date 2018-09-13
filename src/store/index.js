@@ -8,7 +8,7 @@ import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
 import state from './state';
-import modules from '../modules_conf/modules_conf';
+import modules from './modules_conf/modules_conf';
 
 
 Vue.use(Vuex);// 应用 Vuex

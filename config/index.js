@@ -20,8 +20,8 @@ module.exports = {
   },
   test:{
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsPublicPath: '/cdm/', //为 测试服的公共路径
-    assetsSubDirectory: 'static/vue_cdm_cms',
+    assetsPublicPath: '/chunyu_admin/', //为 测试服的公共路径
+    assetsSubDirectory: 'static/vue/vue_chunyu_admin_pc',
     expressRoot:'/Users/cy/myTest/express/dist', //存放本机 express 服务下
     productionSourceMap: true,
     devtool: '#source-map',
@@ -32,27 +32,27 @@ module.exports = {
   },
   biztest:{
       assetsRoot: path.resolve(__dirname, '../dist'),
-      assetsPublicPath: '/cdm/', //为 测试服的公共路径
-      assetsSubDirectory: 'static/vue_cdm_cms',
+      assetsPublicPath: '/chunyu_admin/', //为 测试服的公共路径
+      assetsSubDirectory: 'static/vue/vue_chunyu_admin_pc',
       expressRoot:'/Users/cy/myTest/express/dist', //存放本机 express 服务下
       productionSourceMap: true,
       devtool: '#source-map',
       productionGzip: false,
       productionGzipExtensions: ['js', 'css'],
       bundleAnalyzerReport: process.env.npm_config_report,
-      index: path.resolve(__dirname, '../dist/index.html'), // Template for index.html
+      index: path.resolve(__dirname, '../dist/templates/vue_chunyu_admin_pc/index.html'), // Template for index.html
    },
   build: {
     assetsRoot: path.resolve(__dirname, '../dist'),
     //assetsPublicPath: '//dn-chunyu.qbox.me/@/',    //为线上提供公共路径
     assetsPublicPath: '//static.chunyuyisheng.com/@/',    //为线上提供公共路径
-    assetsSubDirectory: 'static/vue_cdm_cms',      //子目录(包括测试和线上都使用此子目录)
+    assetsSubDirectory: 'static/vue/vue_chunyu_admin_pc',      //子目录(包括测试和线上都使用此子目录)
     productionSourceMap: true,
     devtool: '#source-map',
     productionGzip: false,
     productionGzipExtensions: ['js', 'css'],
     bundleAnalyzerReport: process.env.npm_config_report,
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '../dist/vue_chunyu_admin_pc/index.html'),
 
   }
 }

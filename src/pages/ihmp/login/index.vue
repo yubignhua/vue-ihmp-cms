@@ -8,7 +8,8 @@
         <div class="left_img"><img src="//static.chunyuyisheng.com/@/media/images/2018/08/13/7a1f/229beba3bf99_w600_h410_.png" alt=""></div>
         <el-form class="login-form" autoComplete="on" :model="ruleForm2" ref="ruleForm2" label-position="left">
           <div class="title-container">
-            <h3 class="title">{{$t('login.title')}}</h3>
+            <!--<h3 class="title">{{$t('login.title')}}</h3>-->
+            <h3 class="title">集成化健康管理平台</h3>
             <lang-select class="set-language"></lang-select>
           </div>
           <el-form-item prop="username">
@@ -37,7 +38,7 @@
 </template>
 
 <script>
-  import { isvalidUsername } from '@/utils/validate'
+  import { isvalidUsername } from '@/assets/mUtils/utils/validate'
   import LangSelect from '@/components/LangSelect'
   import {mapActions} from 'vuex'
   import {validPhone} from '../../../assets/mUtils/validate'
@@ -59,7 +60,8 @@
           account: [
             {message: '请填写正确的手机号码',trigger: 'blur',validator:validPhone},
           ]
-        }
+        },
+        jumpPage: this.$route.query.jump_page
       }
     },
     methods: {
@@ -86,7 +88,11 @@
               this.loading = false;
               if(res.username){
                 //登录成后的跳转
-                that.$router.push({path:'/ihmp/task_manage/task_list'})
+                if (that.jumpPage) {
+                  that.$router.push({ name: 'mission_list'});
+                } else {
+                  that.$router.push({path:'/crm/v_ihmp/main/menu_list'})
+                }
               }
               if(res.error_msg){
                 that.$notify.error({
@@ -116,7 +122,7 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-  $bg: #ffffff;
+  $bg: #feff31;
   $light_gray:#eee;
 
   /* reset element-ui css */
@@ -126,15 +132,15 @@
       height: 47px;
       width: 85%;
       input {
-        background: transparent;
+        background: #FFFFFF;
         border: 0px;
         -webkit-appearance: none;
         border-radius: 0px;
         padding: 12px 5px 12px 15px;
-        color: $light_gray;
+        color: #666;
         height: 47px;
         &:-webkit-autofill {
-          -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
+          //-webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
           /*-webkit-text-fill-color: #fff !important;*/
         }
       }

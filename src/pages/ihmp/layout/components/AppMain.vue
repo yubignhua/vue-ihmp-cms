@@ -1,9 +1,9 @@
 <template>
   <section class="app-main" style="min-height: 100%;padding-top: 50px!important;box-sizing: border-box;">
     <transition name="fade" mode="out-in">
-      <keep-alive :include="cachedViews">
+      <!--<keep-alive :include="cachedViews">-->
         <router-view></router-view>
-      </keep-alive>
+      <!--</keep-alive>-->
     </transition>
   </section>
 </template>
@@ -13,7 +13,7 @@ export default {
   name: 'AppMain',
   computed: {
     cachedViews() {
-      //return this.$store.state.tagsView.cachedViews
+      //return this.$store.state.cachedViews
     }
     // key() {
     //   return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()

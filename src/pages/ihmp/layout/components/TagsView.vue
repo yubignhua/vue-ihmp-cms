@@ -17,7 +17,7 @@
 
 <script>
 import ScrollPane from '@/components/ScrollPane'
-import { generateTitle } from '@/utils/i18n'
+import { generateTitle } from '@/assets/mUtils/utils/i18n'
 
 export default {
   components: { ScrollPane },
@@ -86,7 +86,7 @@ export default {
           if (latestView) {
             this.$router.push(latestView.path)
           } else {
-            this.$router.push('/')
+            this.$router.push('/crm/v_ihmp/')
           }
         }
       })
@@ -99,7 +99,7 @@ export default {
     },
     closeAllTags() {
       this.$store.dispatch('delAllViews')
-      this.$router.push('/')
+      this.$router.push('/crm/v_ihmp/')
     },
     openMenu(tag, e) {
       this.visible = true

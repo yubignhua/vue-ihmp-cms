@@ -1,0 +1,196 @@
+// _mockserver.json - mock 接口的配置文件
+// 可以在这个 JSON 中使用注释, 方便对接口做一些说明
+//
+// The minimal _mockserver.json, JSON 必须包含如下信息, 其他字段均是可选字段
+// {
+//     "api": {
+//         "GET /api/users": {
+//             "response": {}
+//         }
+//     }
+// }
+{
+    // Visual Stuido Code 支持通过 JSON schema 来验证 JSON 文件的格式并给予提示信息
+    // To understand the structure of JSON files, we use JSON schemas
+    // https://code.visualstudio.com/Docs/languages/json#_json-schemas-settings
+    "$schema": "http://rawgit.com/ufologist/puer-mock/master/_mockserver-schema.json",
+
+    // 项目的介绍信息
+    "info": {
+        "summary": "xxx 项目接口文档",
+        "description": "如此高大上的接口文档 Powered by puer-mock"
+    },
+
+    // 接口列表
+    "api": {
+        "GET /api/users": {
+            "response": {}
+        },
+        // 
+        "POST /chunyu_admin/accounts/do_login/": {
+            "response": {
+                "next": "/chunyu_admin",
+                "username": "leiyu"
+            }
+        },
+        //
+        "GET /chunyu_admin/crm/accounts/role/": {
+            "response": {
+                "error_code": 0,
+                "error_msg": "",
+                "role": ["crm_consultant"],
+                "user_id": 1235460,
+                "user_name":"leiyu"
+            }
+        },
+        // 请求配置列表
+        "GET /cy_task/permission/group_list/": {
+            "response": {
+                "error_code": "@pick([0])",
+                "error_msg": "@pick(['您有过多未提交体检任务，请提交后认领新任务','该任务已被其他人认领,请领取其它题目'])",
+                "group_list|5": [{
+                    "group_id": "@int(0,299)",
+                    "group_name": "@cname",
+                    "second_class_checker_username": "@cname",
+                    "editor_username_list|5":["@cname"],
+                    "third_class_checker_username": "@cname",
+                    "viewer_username_list|5": ["@cname"],
+                    "can_edit": "@boolean",
+                    "can_view": "@boolean"
+                }],
+            }
+        },
+        // 查看配置详情
+        "GET /cy_task/permission/group_get/": {
+            "response": {
+                "error_code": "@pick([0])",
+                "error_msg": "@pick(['您有过多未提交体检任务，请提交后认领新任务','该任务已被其他人认领,请领取其它题目'])",
+                "group_detail": {
+                    "group_id": "@int(0,299)",
+                    "group_name": "@cword(9, 100)",
+                    "second_class_checker_username": "@cname",
+                    "editor_username_list|5":["@cname"],
+                    "third_class_checker_username": "",
+                    "viewer_username_list|5": ["@cname"],
+                    "oa_name_list|5":[ "@cword(5, 15)"],
+                    "remark": "@cword(100,200)"
+                }
+            }
+        },
+        // 检查用户
+        "POST /cy_task/permission/check_user/": {
+            "response": {
+                "error_code": "@pick([0, 1])",
+                "error_msg": "@pick(['您有过多'])"
+            }
+        },
+        // 
+        "POST /cy_task/permission/group_set/": {
+            "response": {
+                "error_code": "@pick([0])",
+                "error_msg": "@pick(['您有过多'])"
+            }
+        },
+        "GET /cy_task/reward/detail_list/": {
+            "response": {
+                "total_num": "@int(60,1000)",
+                "error_code": "@pick([0])",
+                "error_msg": "@pick(['您有过多未提交体检任务，请提交后认领新任务','该任务已被其他人认领,请领取其它题目'])",
+                "reward_detail_list|20": [{
+                    "detail_id": "@int(0,299)",
+                    "oa_name": "@cname",
+                    "activity_name": "@cname",
+                    "reward_time": "@datetime('y-MM-dd HH:mm:ss')",
+                    "total_num": "@int(9,100)",
+                    "total_yuan": "@int(90,10000)",
+                    "editor_username":"@cname",
+                    "second_class_checker_username": "@cname",
+                    "third_class_checker_username": "@cname",
+                    "status": "@pick(['已发放', '待审核', '已拒绝'])",
+                    "can_edit": "@boolean",
+                    "can_view": "@boolean",
+                    "can_check": "@boolean"
+                }],
+            }
+        },
+        "GET /cy_task/reward/create_detail/": {
+            "response": {
+                "error_code": "@pick([0])",
+                "error_msg": "@pick(['您有过多'])",
+                "result": {
+                    "detail_id": "@int(1,100)",
+                    "manager_group_list|5": [{
+                        "group_id": "@int(100, 300)",
+                        "group_name": "@cword(4, 20)",
+                        "oa_name_list|5": ["@cword(5,20)"]
+                    }],
+                    "operation_text": "@pick(['提交审核','发放奖励'])"
+                }
+            }
+        },
+        // 保存或提交审核
+        "POST /cy_task/reward/record_detail/": {
+            "response": {
+                "error_code": "@pick([0, 1])",
+                "error_msg": "@pick(['您有过多'])"
+            }
+        },
+        // 发放或拒绝发放
+        "POST /cy_task/reward/reward_doctor/": {
+            "response": {
+                "error_code": "@pick([0, 1])",
+                "error_msg": "@pick(['您有过多'])"
+            }
+        },
+        // 下载
+        "GET /cy_task/reward/download_doctor_detail/": {
+            "response": {
+                "error_code": "@pick([0, 1])",
+                "error_msg": "@pick(['您有过多'])",
+                "url": "https://www.baidu.com"
+            }
+        },
+        "GET /cy_task/reward/get_detail/": {
+            "response": {
+                "error_code": "@pick([0])",
+                "error_msg": "@pick(['您有过多'])",
+                "reward_detail": {
+                    "operation_permission": "@cword(5,10)",
+                    "group_name": "@cword(4, 20)",
+                    "detail_id": "@int(1,100)",
+                    "oa_name": "@cword(4, 20)",
+                    "operation_text": "@pick(['提交审核','发放奖励'])",
+                    "remark": "@cword(10, 100)",
+                    "activity_name": "@cword(3,10)",
+                    "personal_message": "@cword(10,100)",
+                    "total_num": "@int(10,1000)",
+                    "total_yuan": "@int(100,1000)",
+                    "reward_time": "@date",
+                    "editor_username": "@cname",
+                    "second_class_checker_username": "@cname",
+                    "third_class_checker_username": "@cname",
+                    "status": "@cname",
+                    "refuse_reason": "@cword(10,20)",
+                    "doctor_list|10": [{
+                        "doctor_id": "@id",
+                        "phone_num": "@id",
+                        "name": "@cname",
+                        "first_class_clinic_name": "@cname",
+                        "second_class_clinic_name": "@cname",
+                        "reward_yuan": "@int(10, 200)",
+                        "is_normal": "@boolean"
+                    }],
+                    "manager_group_list|5": [{
+                        "group_id": "@int(100, 300)",
+                        "group_name": "@cword(4, 20)",
+                        "oa_name_list|5": ["@cword(5,20)"]
+                    }],
+                }
+            }
+        }
+           
+
+    }
+       
+        
+}

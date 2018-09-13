@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { generateTitle } from '@/utils/i18n'
+import { generateTitle } from '@/assets/mUtils/utils/i18n'
 
 export default {
   name: 'SidebarItem',
@@ -55,7 +55,7 @@ export default {
         return !item.hidden
       })
       if (showingChildren.length === 1) {
-        return true
+        return false
       }
       return false
     },

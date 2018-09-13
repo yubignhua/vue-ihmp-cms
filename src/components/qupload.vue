@@ -27,7 +27,7 @@
 		props: {
     	acceptType:{
     		type:String,
-        default:'application/pdf'
+        default: ''
       },
       qClass:{
         type:String,
@@ -41,6 +41,9 @@
       autoStart: {
         default: false
       },
+      mimeType: {
+        defaults: null
+      },
       myLoginUrl: {
         default: '/cooperation/wap/quick_login/?next=' + encodeURI(window.location.href)
       },
@@ -48,7 +51,7 @@
 
 		data(){
 			return {
-        imgUrl3: 'http//media2.chunyuyisheng.com/@/media/images/2018/04/04/a41f/a5738479079b_w184_h184_.png',
+        imgUrl3: 'https://media2.chunyuyisheng.com/@/media/images/2018/04/04/a41f/a5738479079b_w184_h184_.png',
         compCls:this.qClass,
         percent:0,
         isShowProgress:false
@@ -63,6 +66,7 @@
           nums: this.maxNums,
           auto_start:this.autoStart,
           loginUrl:this.myLoginUrl,
+          mimeType: null,
           before(mfile){
 
           },
@@ -77,7 +81,7 @@
               data = { url: res.img_url,fileName:key };
               that.$emit('complete',data);
               that.isShowProgress = false;
-              $(that.$refs.file_name).empty() ;
+              // $(that.$refs.file_name).empty() ;
               Message({
                 message: '上传七牛成功',
                 type: 'success',
@@ -95,10 +99,11 @@
           error(err){
             let tips = '';
             switch (err.type) {
-              case 'numsError':tips = '一次最多上传' + this.nums + '张图片';break;
-              case 'sizeError':tips = '图片最大不超过10M';break;
+              case 'numsError':tips = '一次最多上传' + this.nums + '个文件';break;
+              case 'sizeError':tips = '文件最大不超过10M';break;
               default:tips = err.message;break
             }
+            $(that.$refs.file_name).empty();
             console.log('七牛 error 回调::::::',err)
             Message({
               message: tips + err,
